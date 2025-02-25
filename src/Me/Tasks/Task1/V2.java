@@ -63,7 +63,7 @@ public class V2 extends Application {
         root.setCenter(mainContent);
 
         Scene scene = new Scene(root, 800, 700);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/Me/Tasks/styles.css").toExternalForm());
 
         primaryStage.setTitle("Caesar Salad");
         primaryStage.setScene(scene);
@@ -358,7 +358,7 @@ public class V2 extends Application {
 
         File file = fileChooser.showSaveDialog(primaryStage);
 */
-        File file = new File("src\\Me\\Tasks\\Task1\\output.txt");
+        File file = new File("src\\Me\\Tasks\\IO\\output.txt");
         if (file != null) {
             try (FileWriter fw = new FileWriter(file)) {
                 fw.write(content);
@@ -380,7 +380,7 @@ public class V2 extends Application {
         File file = fileChooser.showOpenDialog(primaryStage);
 */
 
-        File file = new File("src\\Me\\Tasks\\Task1\\input.txt");
+        File file = new File("src\\Me\\Tasks\\IO\\input.txt");
 
         if (file != null) {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -432,7 +432,7 @@ public class V2 extends Application {
 
         // Style the alert
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        dialogPane.getStylesheets().add(getClass().getResource("/Me/Tasks/styles.css").toExternalForm());
         alert.showAndWait();
     }
 }
