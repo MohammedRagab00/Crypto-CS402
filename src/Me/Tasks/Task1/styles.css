@@ -1,0 +1,71 @@
+/* styles.css */
+.root {
+    -fx-background-color: #1E1E1E;
+}
+
+.label {
+    -fx-text-fill: #E0E0E0;
+}
+
+.text-field {
+    -fx-background-color: #252526;
+    -fx-text-fill: #E0E0E0;
+    -fx-border-color: #007ACC;
+    -fx-border-radius: 3px;
+}
+
+.text-area {
+    -fx-control-inner-background: #252526;
+    -fx-text-fill: #E0E0E0;
+    -fx-border-color: #007ACC;
+    -fx-border-radius: 3px;
+}
+
+.text-area .content {
+    -fx-background-color: #252526;
+}
+
+.button {
+    -fx-background-color: #3C3C3C;
+    -fx-text-fill: #E0E0E0;
+    -fx-cursor: hand;
+    -fx-background-radius: 3px;
+    -fx-border-color: #007ACC;
+    -fx-border-radius: 3px;
+}
+
+.button:hover {
+    -fx-background-color: #007ACC;
+}
+
+.titled-pane {
+    -fx-text-fill: #4B0082;
+    -fx-border-color: #007ACC;
+}
+
+.titled-pane .content {
+    -fx-background-color: #252526;
+}
+
+/* Custom styles for specific buttons */
+.encrypt-btn {
+    -fx-border-color: #00AA55;
+}
+
+.decrypt-btn {
+    -fx-border-color: #E6A700;
+}
+
+.clear-btn {
+    -fx-border-color: #CC3333;
+}
+
+/* Adjusting font colors for Input, Output, and Brute Force Analysis sections */
+.input-section .label, .output-section .label, .brute-force-section .label {
+    -fx-text-fill: #ffffff;
+}
+
+/* Adjusting placeholder colors */
+.text-input {
+    -fx-prompt-text-fill: #E0E0E0;
+}
