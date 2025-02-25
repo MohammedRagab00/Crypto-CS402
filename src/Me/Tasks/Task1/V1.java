@@ -48,7 +48,7 @@ public class V1 extends Application {
         root.getChildren().addAll(wordLabel, wordField, shiftLabel, shiftField, monoField, outputArea, bruteArea, buttonBox);
 
         encodeButton.setOnAction(e -> {
-            int shift = 0;
+            int shift;
             try {
                 shift = Integer.parseInt(shiftField.getText());
             } catch (NumberFormatException ex) {
@@ -94,12 +94,16 @@ public class V1 extends Application {
 
         monoButton.setOnAction(e -> {
             char[] key = monoField.getText().toCharArray();
-            StringBuilder result = new StringBuilder("Mono Results:\n");
+            if (key.length == 26) {
+                StringBuilder result = new StringBuilder("Mono Results:\n");
 
-            for (char c : wordField.getText().toCharArray()) {
-                result.append(key[c - 'a']);
+                for (char c : wordField.getText().toCharArray()) {
+                    result.append(key[c - 'a']);
+                }
+                outputArea.setText(result.toString());
+            } else {
+                outputArea.setText("you should enter 26 letters!");
             }
-            outputArea.setText(result.toString());
         });
 
         plaintextAttackButton.setOnAction(e -> {
@@ -108,9 +112,10 @@ public class V1 extends Application {
                 if (encodedText.isEmpty()) {
                     outputArea.setText("Enter encoded text");
                 } else {
-
-//                String decryptedText = caesarCipher(-3, encodedText); // Using a known shift of 3 for simplicity
-                    outputArea.setText("Plaintext Attack Result: " + (decodedText.charAt(0) - encodedText.charAt(0)) % 26);
+                    int num = decodedText.charAt(0) - encodedText.charAt(0), ans;
+                    ans = num >= 0 ? num % 26 : num + 26;
+                    outputArea.setText("Plaintext Attack Result: " + ans);
+                    shiftField.setText(String.valueOf(ans));
                 }
             } catch (Exception ignored) {
 
@@ -118,7 +123,7 @@ public class V1 extends Application {
         });
 
         WriteOnFile.setOnAction(e -> {
-            try (FileWriter fw = new FileWriter(new File("src\\Me\\Tasks\\Task1\\myBrute.txt"))) {
+            try (FileWriter fw = new FileWriter("src\\Me\\Tasks\\Task1\\myBrute.txt")) {
                 fw.write(bruteArea.getText());
 
             } catch (IOException ex) {
@@ -127,7 +132,7 @@ public class V1 extends Application {
 
         });
 
-        Scene scene = new Scene(root, 600  , 500);
+        Scene scene = new Scene(root, 600, 500);
         primaryStage.setTitle("Caesar Salad Tool");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -147,10 +152,9 @@ public class V1 extends Application {
     }
 
     // A simple implementation of MonoAlphabetic Cipher encryption
-    private String monoAlphabeticCipher(String text) {
+    private String monoAlphabeticCipher(String text, TextField m) {
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
-        String shuffledAlphabet = "";
-//        shuffledAlphabet = "zyxwvutsrqponmlkjihgfedcba";
+        String shuffledAlphabet = m.getText();
         Map<Character, Character> cipherMap = new HashMap<>();
         for (int i = 0; i < alphabet.length(); i++) {
             cipherMap.put(alphabet.charAt(i), shuffledAlphabet.charAt(i));

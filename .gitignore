@@ -29,3 +29,5 @@ bin/
 .DS_Store
 
 Osary/
+src/Me/Tasks/Task1/myBrute.txt
+src/Me/Tasks/Task1/output.txt
