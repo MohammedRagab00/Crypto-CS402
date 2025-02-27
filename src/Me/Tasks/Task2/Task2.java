@@ -142,7 +142,7 @@ public class Task2 extends Application {
 
         loadButton.setOnAction(e -> handleLoadFromFile());
         saveButton.setOnAction(e -> handleWriteToFile());
-        attackButton.setOnAction(e -> handleLetterFrequencyAttack());
+//        attackButton.setOnAction(e -> handleLetterFrequencyAttack());
 
         secondaryButtons.getChildren().addAll(loadButton, saveButton, attackButton);
 
@@ -215,7 +215,7 @@ public class Task2 extends Application {
         File file = new File("src\\Me\\Tasks\\IO\\output.txt");
         try (FileWriter fw = new FileWriter(file)) {
             fw.write(content);
-            showAlert("Success", "File saved successfully");
+            showAlert("Success", "File saved successfully to: " + file.getAbsolutePath());
         } catch (IOException ex) {
             showAlert("Error", "Failed to save file: " + ex.getMessage());
         }
@@ -236,18 +236,18 @@ public class Task2 extends Application {
         }
     }
 
-    private void handleLetterFrequencyAttack() {
-        String ciphertext = inputTextArea.getText().trim().toUpperCase();
-
-        if (ciphertext.isEmpty()) {
-            showAlert("Error", "Please enter ciphertext to analyze.");
-            return;
-        }
-
-        // Call the letter frequency attack method from PlayfairCipher
-        String possiblePlaintext = PlayfairCipher.letterFrequencyAttack(ciphertext);
-
-        // Display the result
-        outputTextArea.setText("Possible Plaintext (based on letter frequency):\n" + possiblePlaintext);
-    }
+//    private void handleLetterFrequencyAttack() {
+//        String ciphertext = inputTextArea.getText().trim().toUpperCase();
+//
+//        if (ciphertext.isEmpty()) {
+//            showAlert("Error", "Please enter ciphertext to analyze.");
+//            return;
+//        }
+//
+//        // Call the letter frequency attack method from PlayfairCipher
+//        String possiblePlaintext = PlayfairCipher.letterFrequencyAttack(ciphertext);
+//
+//        // Display the result
+//        outputTextArea.setText("Possible Plaintext (based on letter frequency):\n" + possiblePlaintext);
+//    }
 }

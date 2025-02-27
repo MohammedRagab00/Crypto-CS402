@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.io.*;
+import java.util.Objects;
 
 public class V2 extends Application {
 
@@ -51,7 +52,7 @@ public class V2 extends Application {
 
         // Add all components to main content
         mainContent.getChildren().addAll(
-                createHeaderTitle("Caesar Cipher Tool"),
+                createHeaderTitle(),
                 inputSection,
                 outputSection,
                 bruteForceSection,
@@ -63,15 +64,15 @@ public class V2 extends Application {
         root.setCenter(mainContent);
 
         Scene scene = new Scene(root, 800, 700);
-        scene.getStylesheets().add(getClass().getResource("/Me/Tasks/styles.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/Me/Tasks/styles.css")).toExternalForm());
 
         primaryStage.setTitle("Caesar Salad");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private Label createHeaderTitle(String title) {
-        Label headerLabel = new Label(title);
+    private Label createHeaderTitle() {
+        Label headerLabel = new Label("Caesar Cipher Tool");
         headerLabel.setFont(Font.font("System", FontWeight.BOLD, 24));
         headerLabel.setPadding(new Insets(0, 0, 10, 0));
         return headerLabel;
@@ -432,7 +433,7 @@ public class V2 extends Application {
 
         // Style the alert
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/Me/Tasks/styles.css").toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/Me/Tasks/styles.css")).toExternalForm());
         alert.showAndWait();
     }
 }
