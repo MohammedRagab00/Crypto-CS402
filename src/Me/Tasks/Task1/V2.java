@@ -64,7 +64,7 @@ public class V2 extends Application {
         root.setCenter(mainContent);
 
         Scene scene = new Scene(root, 800, 700);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/Me/Tasks/styles.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/Me/Shared/styles.css")).toExternalForm());
 
         primaryStage.setTitle("Caesar Salad");
         primaryStage.setScene(scene);
@@ -433,7 +433,7 @@ public class V2 extends Application {
 
         // Style the alert
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/Me/Tasks/styles.css")).toExternalForm());
+        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/Me/Shared/styles.css")).toExternalForm());
         alert.showAndWait();
     }
 }

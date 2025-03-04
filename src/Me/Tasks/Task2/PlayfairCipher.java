@@ -129,51 +129,51 @@ public class PlayfairCipher {
         return new int[]{-1, -1};
     }
 
-//    public static String letterFrequencyAttack(String ciphertext) {
-//        // Known frequency of letters in English (in order from most to least frequent)
-//        String englishFrequency = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
-//
-//        // Calculate the frequency of letters in the ciphertext
-//        int[] ciphertextFrequency = new int[26];
-//        for (char c : ciphertext.toCharArray()) {
-//            if (Character.isLetter(c)) {
-//                ciphertextFrequency[c - 'A']++;
-//            }
-//        }
-//
-//        // Sort the ciphertext letters by frequency (most to least frequent)
-//        StringBuilder sortedCiphertextLetters = new StringBuilder();
-//        for (int i = 0; i < 26; i++) {
-//            int maxCount = -1;
-//            char maxChar = 'A';
-//            for (char c = 'A'; c <= 'Z'; c++) {
-//                if (ciphertextFrequency[c - 'A'] > maxCount) {
-//                    maxCount = ciphertextFrequency[c - 'A'];
-//                    maxChar = c;
-//                }
-//            }
-//            if (maxCount > 0) {
-//                sortedCiphertextLetters.append(maxChar);
-//                ciphertextFrequency[maxChar - 'A'] = -1; // Mark as processed
-//            }
-//        }
-//
-//        // Map the most frequent ciphertext letters to the most frequent English letters
-//        StringBuilder possiblePlaintext = new StringBuilder();
-//        for (char c : ciphertext.toCharArray()) {
-//            if (Character.isLetter(c)) {
-//                int index = sortedCiphertextLetters.indexOf(String.valueOf(c));
-//                if (index != -1 && index < englishFrequency.length()) {
-//                    possiblePlaintext.append(englishFrequency.charAt(index));
-//                } else {
-//                    possiblePlaintext.append(c); // Keep the original character if no mapping is found
-//                }
-//            } else {
-//                possiblePlaintext.append(c); // Keep non-letter characters as-is
-//            }
-//        }
-//
-//        return possiblePlaintext.toString();
-//    }
+    public static String letterFrequencyAttack(String ciphertext) {
+        // Known frequency of letters in English (in order from most to least frequent)
+        String englishFrequency = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
+
+        // Calculate the frequency of letters in the ciphertext
+        int[] ciphertextFrequency = new int[26];
+        for (char c : ciphertext.toCharArray()) {
+            if (Character.isLetter(c)) {
+                ciphertextFrequency[c - 'A']++;
+            }
+        }
+
+        // Sort the ciphertext letters by frequency (most to least frequent)
+        StringBuilder sortedCiphertextLetters = new StringBuilder();
+        for (int i = 0; i < 26; i++) {
+            int maxCount = -1;
+            char maxChar = 'A';
+            for (char c = 'A'; c <= 'Z'; c++) {
+                if (ciphertextFrequency[c - 'A'] > maxCount) {
+                    maxCount = ciphertextFrequency[c - 'A'];
+                    maxChar = c;
+                }
+            }
+            if (maxCount > 0) {
+                sortedCiphertextLetters.append(maxChar);
+                ciphertextFrequency[maxChar - 'A'] = -1; // Mark as processed
+            }
+        }
+
+        // Map the most frequent ciphertext letters to the most frequent English letters
+        StringBuilder possiblePlaintext = new StringBuilder();
+        for (char c : ciphertext.toCharArray()) {
+            if (Character.isLetter(c)) {
+                int index = sortedCiphertextLetters.indexOf(String.valueOf(c));
+                if (index != -1 && index < englishFrequency.length()) {
+                    possiblePlaintext.append(englishFrequency.charAt(index));
+                } else {
+                    possiblePlaintext.append(c); // Keep the original character if no mapping is found
+                }
+            } else {
+                possiblePlaintext.append(c); // Keep non-letter characters as-is
+            }
+        }
+
+        return possiblePlaintext.toString();
+    }
 
 }
