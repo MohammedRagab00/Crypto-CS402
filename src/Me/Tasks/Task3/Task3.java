@@ -42,6 +42,14 @@ public class Task3 extends CipherAppTemplate {
 
         attackButton.setText("No Attack Available");
 
+        cipherChoice.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if ("One-Time Pad".equals(newValue)) {
+                attackButton.setText("Create Random Key");
+            } else {
+                attackButton.setText("No Attack Available");
+            }
+        });
+
         return buttonBox;
     }
 
@@ -101,6 +109,21 @@ public class Task3 extends CipherAppTemplate {
 
     @Override
     protected void handleAttack() {
-        System.out.println("No attack for now, stay tuned.");
+        String selectedCipher = cipherChoice.getValue();
+
+        if ("One-Time Pad".equals(selectedCipher)) {
+            String text = inputTextArea.getText().trim();
+
+            if (text.isEmpty()) {
+//                showAlert("Error", "Please enter some plaintext to generate a key.");
+                return;
+            }
+
+            String randomKey = OneTimePadVigenere.generateRandomKey(text.length());
+
+            keyField.setText(randomKey);
+        } else {
+            System.out.println("No attack for now, stay tuned.");
+        }
     }
 }

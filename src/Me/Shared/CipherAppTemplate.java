@@ -22,36 +22,54 @@ public abstract class CipherAppTemplate extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        BorderPane root = new BorderPane();
-        root.setPadding(new Insets(15));
+        // Create a root ScrollPane that will contain everything
+        ScrollPane rootScrollPane = new ScrollPane();
+        rootScrollPane.setFitToWidth(true);
+        rootScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        rootScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        // Main content area
-        VBox mainContent = new VBox(15);
-        mainContent.setPadding(new Insets(10));
+        // Create the main container
+        VBox mainContainer = new VBox(15);
+        mainContainer.setPadding(new Insets(15));
+        mainContainer.setStyle("-fx-background-color: transparent;");
+
+        // Ensure the VBox expands to fill the ScrollPane
+        VBox.setVgrow(mainContainer, Priority.ALWAYS);
+
+        // Create your existing components
+        Label headerTitle = createHeaderTitle();
 
         // Input Section
         TitledPane inputSection = createInputSection();
         inputSection.getStyleClass().add("input-section");
 
+        // Ensure input section can expand
+        VBox.setVgrow(inputSection, Priority.ALWAYS);
+
         // Output Section
         TitledPane outputSection = createOutputSection();
         outputSection.getStyleClass().add("output-section");
 
+        // Ensure output section can expand
+        VBox.setVgrow(outputSection, Priority.ALWAYS);
+
         // Action Buttons
         VBox buttonBox = createButtonBox(primaryStage);
 
-        // Add all components to main content
-        mainContent.getChildren().addAll(
-                createHeaderTitle(),
+        // Add all components to main container
+        mainContainer.getChildren().addAll(
+                headerTitle,
                 inputSection,
                 outputSection,
                 new Separator(),
                 buttonBox
         );
 
-        root.setCenter(mainContent);
+        // Set the main container as the content of the root ScrollPane
+        rootScrollPane.setContent(mainContainer);
 
-        Scene scene = new Scene(root, 800, 600);
+        // Create the scene with the root ScrollPane
+        Scene scene = new Scene(rootScrollPane, 800, 600);
 
         // Debugging: Check if the CSS file is found
         URL cssResource = getClass().getResource("/Me/Shared/styles.css");

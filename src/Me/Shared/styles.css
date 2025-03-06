@@ -1,71 +1,85 @@
-/* styles.css */
+/* Dark Theme with Professional Color Palette */
 .root {
-    -fx-background-color: #1E1E1E;
+    -fx-background-color: #121212; /* Deep dark background */
 }
 
 .label {
-    -fx-text-fill: #E0E0E0;
+    -fx-text-fill: #E0E0E0; /* Light gray text for good readability */
 }
 
-.text-field {
-    -fx-background-color: #252526;
-    -fx-text-fill: #E0E0E0;
-    -fx-border-color: #007ACC;
-    -fx-border-radius: 3px;
-}
-
-.text-area {
-    -fx-control-inner-background: #252526;
-    -fx-text-fill: #E0E0E0;
-    -fx-border-color: #007ACC;
-    -fx-border-radius: 3px;
+.text-field, .text-area {
+    -fx-background-color: #1E1E1E; /* Slightly lighter than background */
+    -fx-text-fill: #F0F0F0; /* Bright white text */
+    -fx-border-color: #4A90E2; /* Soft blue accent */
+    -fx-border-radius: 4px;
+    -fx-prompt-text-fill: #888888; /* Muted placeholder text */
 }
 
 .text-area .content {
-    -fx-background-color: #252526;
+    -fx-background-color: #1E1E1E;
 }
 
 .button {
-    -fx-background-color: #3C3C3C;
-    -fx-text-fill: #E0E0E0;
+    -fx-background-color: #2C2C2C; /* Dark button background */
+    -fx-text-fill: #F0F0F0; /* Bright text */
     -fx-cursor: hand;
-    -fx-background-radius: 3px;
-    -fx-border-color: #007ACC;
-    -fx-border-radius: 3px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #4A90E2; /* Soft blue accent */
+    -fx-border-radius: 4px;
+    -fx-padding: 8px 15px;
 }
 
 .button:hover {
-    -fx-background-color: #007ACC;
+    -fx-background-color: #4A90E2; /* Blue on hover */
+    -fx-text-fill: #FFFFFF;
 }
 
 .titled-pane {
-    -fx-text-fill: #4B0082;
-    -fx-border-color: #007ACC;
+    -fx-text-fill: #4A90E2; /* Blue title */
+    -fx-border-color: #4A90E2;
 }
 
 .titled-pane .content {
-    -fx-background-color: #252526;
+    -fx-background-color: #1E1E1E;
 }
 
-/* Custom styles for specific buttons */
+/* Custom button styles with meaningful colors */
 .encrypt-btn {
-    -fx-border-color: #00AA55;
+    -fx-border-color: #2ECC71; /* Green for encryption */
 }
 
 .decrypt-btn {
-    -fx-border-color: #E6A700;
+    -fx-border-color: #F39C12; /* Orange for decryption */
 }
 
 .clear-btn {
-    -fx-border-color: #CC3333;
+    -fx-border-color: #E74C3C; /* Red for clear/reset */
 }
 
-/* Adjusting font colors for Input, Output, and Brute Force Analysis sections */
-.input-section .label, .output-section .label, .brute-force-section .label {
-    -fx-text-fill: #ffffff;
+/* Section label styles */
+.input-section .label,
+.output-section .label,
+.brute-force-section .label {
+    -fx-text-fill: #FFFFFF;
 }
 
-/* Adjusting placeholder colors */
-.text-input {
-    -fx-prompt-text-fill: #E0E0E0;
+/* Add these to your existing styles.css */
+.scroll-pane {
+    -fx-background-color: #121212; /* Match root background */
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #121212; /* Match root background */
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #121212;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: #2C2C2C;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #4A90E2;
 }

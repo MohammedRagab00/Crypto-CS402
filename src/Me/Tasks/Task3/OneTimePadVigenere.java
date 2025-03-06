@@ -1,5 +1,7 @@
 package Me.Tasks.Task3;
 
+import java.security.SecureRandom;
+
 public class OneTimePadVigenere {
 
     public static String processText(String text, String key, boolean encrypt) {
@@ -32,5 +34,24 @@ public class OneTimePadVigenere {
         }
 
         return result.toString();
+    }
+
+    public static String generateRandomKey(int length) {
+        String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                lowercase = "abcdefghijklmnopqrstuvwxyz",
+                numbers = "0123456789",
+                specialChars = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+        String allCharacters = uppercase + lowercase + numbers + specialChars;
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder key = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(allCharacters.length());
+            key.append(allCharacters.charAt(index));
+        }
+
+        return key.toString();
     }
 }
