@@ -118,10 +118,15 @@ public class Task3 extends CipherAppTemplate {
 //                showAlert("Error", "Please enter some plaintext to generate a key.");
                 return;
             }
-
-            String randomKey = OneTimePadVigenere.generateRandomKey(text.length());
-
-            keyField.setText(randomKey);
+            String[] arr = keyField.getText().split(",");
+            try {
+                int a = Integer.parseInt(arr[0]), b = Integer.parseInt(arr[1]), s = Integer.parseInt(arr[2]);
+                System.out.println(a + ", " + b + ", " + s);
+                String randomKey = OneTimePadVigenere.generateRandomKey(text.length(), a, b, s);
+                keyField.setText(randomKey);
+            } catch (NumberFormatException e) {
+                showAlert("Error", e.getMessage());
+            }
         } else {
             System.out.println("No attack for now, stay tuned.");
         }

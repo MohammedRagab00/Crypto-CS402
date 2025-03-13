@@ -15,6 +15,7 @@ public class OneTimePadVigenere {
                 char keyBase = Character.isLowerCase(keyChar) ? 'a' : 'A';
 
                 int shift = (keyChar - keyBase) % 26;
+//                shift = key.charAt(keyIndex % key.length()) % 26;
 /*
                 char processedChar;
                 if (encrypt) {
@@ -36,20 +37,26 @@ public class OneTimePadVigenere {
         return result.toString();
     }
 
-    public static String generateRandomKey(int length) {
-        String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                lowercase = "abcdefghijklmnopqrstuvwxyz",
-                numbers = "0123456789",
-                specialChars = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+    public static String generateRandomKey(int length, int a, int b, int x) {
+        StringBuilder key = new StringBuilder();
+/*
+        final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                LOWERCASE = "abcdefghijklmnopqrstuvwxyz",
+                NUMBERS = "0123456789",
+                SPECIAL_CHARACTERS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 
-        String allCharacters = uppercase + lowercase + numbers + specialChars;
+        final String ALL_CHARACTERS = UPPERCASE + LOWERCASE + NUMBERS + SPECIAL_CHARACTERS;
 
         SecureRandom random = new SecureRandom();
-        StringBuilder key = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
             int index = random.nextInt(allCharacters.length());
             key.append(allCharacters.charAt(index));
+        }
+*/
+        for (int i = 0; i < length; i++) {
+            key.append((char) (x + 'a'));
+            x = (a * x + b) % 26;
         }
 
         return key.toString();
