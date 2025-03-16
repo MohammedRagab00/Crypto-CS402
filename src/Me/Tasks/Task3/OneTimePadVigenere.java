@@ -37,7 +37,7 @@ public class OneTimePadVigenere {
         return result.toString();
     }
 
-    public static String generateRandomKey(int length, int a, int b, int x) {
+    public static String generateRandomKey(String text, int a, int b, int x) {
         StringBuilder key = new StringBuilder();
 /*
         final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -54,6 +54,12 @@ public class OneTimePadVigenere {
             key.append(allCharacters.charAt(index));
         }
 */
+        int length = 0;
+        for (char c : text.toCharArray()) {
+            if (Character.isLetter(c)) {
+                ++length;
+            }
+        }
         for (int i = 0; i < length; i++) {
             key.append((char) (x + 'a'));
             x = (a * x + b) % 26;
