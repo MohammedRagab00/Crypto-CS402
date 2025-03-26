@@ -160,11 +160,11 @@ public class Task3 extends CipherAppTemplate {
                 if (aField.getText().isEmpty() || bField.getText().isEmpty() || sField.getText().isEmpty()) {
                     return;
                 }
-                int a = aField.getText().isEmpty() ? 0 : Integer.parseInt(aField.getText());
-                int b = bField.getText().isEmpty() ? 0 : Integer.parseInt(bField.getText());
-                int s = sField.getText().isEmpty() ? 0 : Integer.parseInt(sField.getText());
+                int a = aField.getText().isEmpty() ? 0 : Integer.parseInt(aField.getText()),
+                        b = bField.getText().isEmpty() ? 0 : Integer.parseInt(bField.getText()),
+                        s = sField.getText().isEmpty() ? 0 : Integer.parseInt(sField.getText());
 
-                String randomKey = OneTimePadVigenere.generateRandomKey(text, a, b, s);
+                String randomKey = OneTimePadVigenere.generateRandomKey(text, a, b, s % 26);
                 keyField.setText(randomKey);
             } catch (NumberFormatException e) {
                 showAlert("Error", "Invalid parameters: " + e.getMessage());

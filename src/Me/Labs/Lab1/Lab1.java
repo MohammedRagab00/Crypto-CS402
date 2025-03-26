@@ -80,5 +80,3 @@ public class Lab1 extends Application {
         return answer.toString();
     }
 }
-
-
