@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
@@ -22,6 +23,13 @@ public abstract class CipherAppTemplate extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        try {
+            Image appIcon = new Image(AppConstants.APP_ICON_PATH);
+            primaryStage.getIcons().add(appIcon);
+        } catch (Exception e) {
+            System.err.println("Error loading icon: " + e.getMessage());
+        }
+
         // Create a root ScrollPane that will contain everything
         ScrollPane rootScrollPane = new ScrollPane();
         rootScrollPane.setFitToWidth(true);
@@ -71,13 +79,16 @@ public abstract class CipherAppTemplate extends Application {
         // Create the scene with the root ScrollPane
         Scene scene = new Scene(rootScrollPane, 800, 600);
 
-        // Debugging: Check if the CSS file is found
-        URL cssResource = getClass().getResource("/Me/Shared/styles.css");
-        if (cssResource == null) {
-            System.err.println("styles.css not found!");
-        } else {
-            System.out.println("Found styles.css at: " + cssResource.toExternalForm());
-            scene.getStylesheets().add(cssResource.toExternalForm());
+        // Load CSS using constant
+        try {
+            URL cssResource = getClass().getResource(AppConstants.APP_CSS_PATH);
+            if (cssResource != null) {
+                scene.getStylesheets().add(cssResource.toExternalForm());
+            } else {
+                System.err.println("CSS file not found at: " + AppConstants.APP_CSS_PATH);
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading CSS: " + e.getMessage());
         }
 
         primaryStage.setTitle(getAppTitle());
@@ -85,11 +96,17 @@ public abstract class CipherAppTemplate extends Application {
         primaryStage.show();
     }
 
+    public class AppConstants {
+        public static final String APP_ICON_PATH = "/Me/Shared/Images/app-icon.png";
+        public static final String APP_CSS_PATH = "/Me/Shared/styles.css";
+        public static final String DEFAULT_FONT = "System";
+    }
+
     protected abstract String getAppTitle();
 
     protected Label createHeaderTitle() {
         Label headerLabel = new Label(getAppTitle());
-        headerLabel.setFont(Font.font("System", FontWeight.BOLD, 24));
+        headerLabel.setFont(Font.font(AppConstants.DEFAULT_FONT, FontWeight.BOLD, 24));
         headerLabel.setPadding(new Insets(0, 0, 10, 0));
         return headerLabel;
     }
@@ -170,7 +187,7 @@ public abstract class CipherAppTemplate extends Application {
 
         Button loadButton = createButton("Load from File", null);
         Button saveButton = createButton("Save to File", null);
-        Button attackButton = createButton("Letter Frequency Attack", null);
+        Button attackButton = createButton("Attack", null);
 
         loadButton.setOnAction(e -> handleLoadFromFile(primaryStage));
         saveButton.setOnAction(e -> handleWriteToFile(primaryStage));
@@ -206,7 +223,15 @@ public abstract class CipherAppTemplate extends Application {
 
         // Style the alert
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/Me/Shared/styles.css")).toExternalForm());
+        try {
+            dialogPane.getStylesheets().add(
+                    Objects.requireNonNull(
+                            getClass().getResource(AppConstants.APP_CSS_PATH)
+                    ).toExternalForm()
+            );
+        } catch (Exception e) {
+            System.err.println("Error styling alert: " + e.getMessage());
+        }
         alert.showAndWait();
     }
 

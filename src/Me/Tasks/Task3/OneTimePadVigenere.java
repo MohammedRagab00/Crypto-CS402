@@ -55,14 +55,11 @@ public class OneTimePadVigenere {
         }
 */
         int length = 0;
-        for (char c : text.toCharArray()) {
-            if (Character.isLetter(c)) {
-                ++length;
-            }
-        }
+        for (char c : text.toCharArray()) if (Character.isLetter(c)) ++length;
+
         for (int i = 0; i < length; i++) {
-            key.append((char) (x + 'a'));
-            x = (a * x + b) % 26;
+            key.append((char) (x % 26 + 'a'));
+            x = (a * x + b);
         }
 
         return key.toString();
