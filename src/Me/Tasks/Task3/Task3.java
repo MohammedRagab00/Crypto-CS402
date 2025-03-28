@@ -87,17 +87,20 @@ public class Task3 extends CipherAppTemplate {
         String text = inputTextArea.getText().trim();
         String key = keyField.getText().trim();
 
-        if (text.isEmpty() || key.isEmpty()) {
-            showAlert("Error", "Please enter both text and key.");
-            return;
-        }
-
-        String selectedCipher = cipherChoice.getValue();
-
         try {
+            String selectedCipher = cipherChoice.getValue();
+            int textLength = OneTimePadVigenere.length(text);
             if ("One-Time Pad".equals(selectedCipher)) {
-                if (key.length() < text.length()) {
-                    showAlert("Error", "For One-Time Pad, the key must be at least as long as the plaintext.");
+                if (key.length() < textLength || key.isEmpty()) {
+                    int a = aField.getText().isEmpty() ? 0 : Integer.parseInt(aField.getText()),
+                            b = bField.getText().isEmpty() ? 0 : Integer.parseInt(bField.getText()),
+                            s = sField.getText().isEmpty() ? 0 : Integer.parseInt(sField.getText());
+                    key = OneTimePadVigenere.generateRandomKey(textLength, a, b, s % 26);
+                    keyField.setText(key);
+                }
+            } else {
+                if (text.isEmpty() || key.isEmpty()) {
+                    showAlert("Error", "Please enter both text and key.");
                     return;
                 }
             }
@@ -119,15 +122,16 @@ public class Task3 extends CipherAppTemplate {
             return;
         }
 
-        String selectedCipher = cipherChoice.getValue();
-
         try {
+/*
+            String selectedCipher = cipherChoice.getValue();
             if ("One-Time Pad".equals(selectedCipher)) {
                 if (key.length() < text.length()) {
-                    showAlert("Error", "For One-Time Pad, the key must be at least as long as the ciphertext.");
+                    showAlert("Error", "For One-Time Pad, the key must be at least as long as the plaintext.");
                     return;
                 }
             }
+*/
 
             String decryptedText = OneTimePadVigenere.processText(text, key, false);
             outputTextArea.setText(decryptedText);
@@ -160,11 +164,11 @@ public class Task3 extends CipherAppTemplate {
                 if (aField.getText().isEmpty() || bField.getText().isEmpty() || sField.getText().isEmpty()) {
                     return;
                 }
-                int a = aField.getText().isEmpty() ? 0 : Integer.parseInt(aField.getText()),
-                        b = bField.getText().isEmpty() ? 0 : Integer.parseInt(bField.getText()),
-                        s = sField.getText().isEmpty() ? 0 : Integer.parseInt(sField.getText());
+                int a = Integer.parseInt(aField.getText()),
+                        b = Integer.parseInt(bField.getText()),
+                        s = Integer.parseInt(sField.getText());
 
-                String randomKey = OneTimePadVigenere.generateRandomKey(text, a, b, s % 26);
+                String randomKey = OneTimePadVigenere.generateRandomKey(OneTimePadVigenere.length(text), a, b, s % 26);
                 keyField.setText(randomKey);
             } catch (NumberFormatException e) {
                 showAlert("Error", "Invalid parameters: " + e.getMessage());
