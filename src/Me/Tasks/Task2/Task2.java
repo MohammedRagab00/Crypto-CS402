@@ -44,7 +44,7 @@ public class Task2 extends CipherAppTemplate {
     }
 
     @Override
-    protected void handleAttack() {
+    protected void handleOptionalAction() {
         String ciphertext = inputTextArea.getText().trim().toUpperCase();
 
         if (ciphertext.isEmpty()) {

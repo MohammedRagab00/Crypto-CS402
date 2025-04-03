@@ -141,7 +141,7 @@ public class Task3 extends CipherAppTemplate {
     }
 
     @Override
-    protected void handleAttack() {
+    protected void handleOptionalAction() {
         String selectedCipher = cipherChoice.getValue();
 
         if ("One-Time Pad".equals(selectedCipher)) {
