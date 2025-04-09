@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.FileWriter;
 import java.io.IOException;
+//import java.math.BigInteger;
 
 public class DESCipher extends Application {
 
@@ -44,7 +45,7 @@ public class DESCipher extends Application {
             1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1
     };
 
-    public static final int[][][] SBOX = {
+    public static final int[][][] S_BOX = {
             {
                     {14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7},
                     {0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8},
@@ -135,17 +136,15 @@ public class DESCipher extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("DES Cipher Application");
 
-        // Create UI components
         Label inputLabel = new Label("Input Text:");
         inputTextArea = new TextArea();
-        inputTextArea.setWrapText(true);
+        inputTextArea.setWrapText(false);
         inputTextArea.setPrefHeight(100);
 
-        Label keyLabel = new Label("DES Key (16 hex characters):");
+        Label keyLabel = new Label("DES Key (in hex):");
         keyField = new TextField();
         keyField.setPromptText("e.g., 133457799BBCDFF1");
 
-        // Operation selection (Encrypt/Decrypt)
         Label operationLabel = new Label("Operation:");
         operationGroup = new ToggleGroup();
         RadioButton encryptRadio = new RadioButton("Encrypt");
@@ -165,11 +164,10 @@ public class DESCipher extends Application {
 
         Label outputLabel = new Label("Result:");
         outputTextArea = new TextArea();
-        outputTextArea.setWrapText(true);
+        outputTextArea.setWrapText(false);
         outputTextArea.setEditable(false);
         outputTextArea.setPrefHeight(100);
 
-        // Layout
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -228,7 +226,6 @@ public class DESCipher extends Application {
             }
         } catch (Exception e) {
             showAlert("Error: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -245,12 +242,19 @@ public class DESCipher extends Application {
         showAlert("16 round keys generated and saved");
     }
 
-
+/*
     private String padding(String mes) {
-        if (mes.length() < 8) {
-            mes += "X";
+        StringBuilder mesBuilder = new StringBuilder(mes);
+        while (mesBuilder.length() < 8) {
+            mesBuilder.append("X");
         }
+        mes = mesBuilder.toString();
         return mes;
+    }
+*/
+    private String padding(String mes) {
+        int paddingLen = Math.max(8 - mes.length(), 0);
+        return mes + String.valueOf((char) 'X').repeat(paddingLen);
     }
 
     private String[] generateKeys(String hexKey) {
@@ -294,7 +298,6 @@ public class DESCipher extends Application {
         String left = permutedText.substring(0, 32);
         String right = permutedText.substring(32, 64);
 
-        // Use keys in reverse order for decryption
         for (int i = 15; i >= 0; i--) {
             String function = feistel(right, keys[i]);
             String newRight = xor(left, function);
@@ -309,8 +312,8 @@ public class DESCipher extends Application {
 
     private String feistel(String half, String key) {
         String expanded = permutation(half, E, 48);
-        String xored = xor(expanded, key);
-        String substituted = sBoxSubstitution(xored);
+        String myXOR = xor(expanded, key);
+        String substituted = sBoxSubstitution(myXOR);
         return permutation(substituted, P, 32);
     }
 
@@ -319,7 +322,7 @@ public class DESCipher extends Application {
         for (int i = 0; i < 8; i++) {
             int row = Integer.parseInt("" + input.charAt(i * 6) + input.charAt(i * 6 + 5), 2);
             int col = Integer.parseInt(input.substring(i * 6 + 1, i * 6 + 5), 2);
-            output.append(String.format("%4s", Integer.toBinaryString(SBOX[i][row][col])).replace(' ', '0'));
+            output.append(String.format("%4s", Integer.toBinaryString(S_BOX[i][row][col])).replace(' ', '0'));
         }
         return output.toString();
     }
@@ -355,6 +358,10 @@ public class DESCipher extends Application {
             binary.append(String.format("%4s", Integer.toBinaryString(Integer.parseInt(String.valueOf(c), 16)))
                     .replace(' ', '0'));
         }
+/*
+        String s = new BigInteger(hex, 16).toString(2);
+        System.out.println(s+'\n'+binary);
+*/
         return binary.toString();
     }
 
@@ -383,7 +390,7 @@ public class DESCipher extends Application {
             for (int i = 0; i < keys.length; i++) {
                 String binaryKey = keys[i];
                 String hexKey = binaryToHex(binaryKey);
-                writer.write(String.format("Round %2d Key:\n", i+1));
+                writer.write(String.format("Round %2d Key:\n", i + 1));
                 writer.write(String.format("Binary: %s\n", binaryKey));
                 writer.write(String.format("Hex:    %s\n\n", hexKey));
             }
