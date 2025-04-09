@@ -1,8 +1,16 @@
 package Me.Tasks.Task2;
 
 import Me.Shared.CipherAppTemplate;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 public class Task2 extends CipherAppTemplate {
+
+    @Override
+    protected void initialize() {
+        configureOptionalButton("Frequency Analysis", true);
+        keyField.setPromptText("Enter Playfair cipher key (no 'J's)");
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -14,18 +22,28 @@ public class Task2 extends CipherAppTemplate {
     }
 
     @Override
+    protected void setupInputSection(VBox inputBox) {
+        // Add Playfair-specific instructions
+        Label instructions = new Label("Note: Key should not contain 'J's. Text will be processed automatically.");
+
+        inputBox.getChildren().addAll(instructions);
+    }
+
+    @Override
     protected void handleEncrypt() {
         String text = inputTextArea.getText().trim();
         String key = keyField.getText().trim();
 
-        if (text.isEmpty() || key.isEmpty()) {
-            showAlert("Error", "Please enter both text and key.");
+        if (!validateInputs(text, key)) {
             return;
         }
 
-        // Call Playfair encryption logic
-        String encryptedText = PlayfairCipher.encrypt(text, key);
-        outputTextArea.setText(encryptedText);
+        try {
+            String encryptedText = PlayfairCipher.encrypt(text, key);
+            outputTextArea.setText("Encrypted: " + encryptedText);
+        } catch (IllegalArgumentException e) {
+            showAlert("Error", e.getMessage());
+        }
     }
 
     @Override
@@ -33,14 +51,16 @@ public class Task2 extends CipherAppTemplate {
         String text = inputTextArea.getText().trim();
         String key = keyField.getText().trim();
 
-        if (text.isEmpty() || key.isEmpty()) {
-            showAlert("Error", "Please enter both text and key.");
+        if (!validateInputs(text, key)) {
             return;
         }
 
-        // Call Playfair decryption logic
-        String decryptedText = PlayfairCipher.decrypt(text, key);
-        outputTextArea.setText(decryptedText);
+        try {
+            String decryptedText = PlayfairCipher.decrypt(text, key);
+            outputTextArea.setText("Decrypted: " + decryptedText);
+        } catch (IllegalArgumentException e) {
+            showAlert("Error", e.getMessage());
+        }
     }
 
     @Override
@@ -48,14 +68,29 @@ public class Task2 extends CipherAppTemplate {
         String ciphertext = inputTextArea.getText().trim().toUpperCase();
 
         if (ciphertext.isEmpty()) {
-            showAlert("Error", "Please enter ciphertext to analyze.");
+            showAlert("Error", "Please enter ciphertext to analyze");
             return;
         }
 
-        // Call the letter frequency attack method from PlayfairCipher
-        String possiblePlaintext = PlayfairCipher.letterFrequencyAttack(ciphertext);
+        try {
+            String possiblePlaintext = PlayfairCipher.letterFrequencyAttack(ciphertext);
+            outputTextArea.setText("Possible Plaintext (frequency analysis):\n" + possiblePlaintext);
+        } catch (IllegalArgumentException e) {
+            showAlert("Error", e.getMessage());
+        }
+    }
 
-        // Display the result
-        outputTextArea.setText("Possible Plaintext (based on letter frequency):\n" + possiblePlaintext);
+    private boolean validateInputs(String text, String key) {
+        if (text.isEmpty() || key.isEmpty()) {
+            showAlert("Error", "Please enter both text and key");
+            return false;
+        }
+
+        if (key.contains("J") || key.contains("j")) {
+            showAlert("Error", "Playfair key cannot contain the letter 'J'");
+            return false;
+        }
+
+        return true;
     }
 }

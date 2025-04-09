@@ -8,8 +8,10 @@ import javafx.scene.layout.VBox;
 
 public class Task4 extends CipherAppTemplate {
     private TextArea keysTextArea;
+    private TextField roundsField;
 
-    public Task4() {
+    @Override
+    protected void initialize() {
         configureOptionalButton("Show Key Schedule", true);
     }
 
@@ -24,12 +26,10 @@ public class Task4 extends CipherAppTemplate {
 
     @Override
     protected void setupInputSection(VBox inputBox) {
-        super.setupInputSection(inputBox);
-        keyField.setPromptText("Enter 8-character key (56-bit effective)");
-
+        // Add DES-specific controls
         HBox paramsBox = new HBox(10);
         Label paramsLabel = new Label("Rounds to Show:");
-        TextField roundsField = new TextField("16");
+        roundsField = createTextField("16");
         roundsField.setPrefWidth(60);
         paramsBox.getChildren().addAll(paramsLabel, roundsField);
         inputBox.getChildren().add(paramsBox);
@@ -40,23 +40,22 @@ public class Task4 extends CipherAppTemplate {
         VBox outputBox = new VBox(10);
         outputBox.setPadding(new Insets(10));
 
-        outputTextArea = createOutputArea("Result:", 100);
-        keysTextArea = createOutputArea("Key Schedule:", 150);
+        outputTextArea = createTextArea("Result will appear here...", 100);
+        outputTextArea.setEditable(false);
+
+        keysTextArea = createTextArea("Key schedule will appear here...", 150);
+        keysTextArea.setEditable(false);
 
         outputBox.getChildren().addAll(
-                new Label("Result:"), outputTextArea,
-                new Label("Key Schedule:"), keysTextArea
+                new Label("Result:"),
+                outputTextArea,
+                new Label("Key Schedule:"),
+                keysTextArea
         );
 
-        return new TitledPane("Output", outputBox);
-    }
-
-    private TextArea createOutputArea(String prompt, int height) {
-        TextArea area = new TextArea();
-        area.setPromptText(prompt);
-        area.setPrefHeight(height);
-        area.setEditable(false);
-        return area;
+        TitledPane pane = new TitledPane("Output", outputBox);
+        pane.setCollapsible(false);
+        return pane;
     }
 
     @Override
@@ -75,8 +74,8 @@ public class Task4 extends CipherAppTemplate {
 
         try {
             if (validateInputs(text, key)) {
-                String result = DESCipher.processText(text, key, encrypt);
-                String keys = DESCipher.generateKeySchedule(key);
+                String result = DESCipherV1.processText(text, key, encrypt);
+                String keys = DESCipherV1.generateKeySchedule(key);
 
                 outputTextArea.setText(encrypt ?
                         "Encrypted: " + result :
@@ -94,7 +93,7 @@ public class Task4 extends CipherAppTemplate {
         String key = keyField.getText().trim();
         try {
             if (validateKey(key)) {
-                keysTextArea.setText(DESCipher.generateKeySchedule(key));
+                keysTextArea.setText(DESCipherV1.generateKeySchedule(key));
             }
         } catch (IllegalArgumentException e) {
             showAlert("Error", e.getMessage());

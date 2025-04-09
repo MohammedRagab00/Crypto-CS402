@@ -7,12 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class Task3 extends CipherAppTemplate {
-
     private ComboBox<String> cipherChoice;
-    private Button attackButton;
     private TextField aField;
     private TextField bField;
     private TextField sField;
@@ -27,9 +24,15 @@ public class Task3 extends CipherAppTemplate {
     }
 
     @Override
-    protected void setupInputSection(VBox inputBox) {
-        super.setupInputSection(inputBox);
+    protected void initialize() {
+        // Configure the optional button visibility and text
+        configureOptionalButton("No Attack Available", true);
+    }
 
+    @Override
+    protected void setupInputSection(VBox inputBox) {
+        // Call parent's implementation first
+        // Add cipher-specific controls
         Label cipherLabel = new Label("Choose Cipher:");
         cipherChoice = new ComboBox<>();
         cipherChoice.getItems().addAll("One-Time Pad", "Vigenère Cipher");
@@ -37,23 +40,22 @@ public class Task3 extends CipherAppTemplate {
 
         HBox paramsBox = new HBox(10);
         Label paramsLabel = new Label("Key Generation Parameters:");
-        aField = new TextField();
-        aField.setPromptText("a");
+        aField = createTextField("a");
         aField.setPrefWidth(60);
-        bField = new TextField();
-        bField.setPromptText("b");
+        bField = createTextField("b");
         bField.setPrefWidth(60);
-        sField = new TextField();
-        sField.setPromptText("s");
+        sField = createTextField("s");
         sField.setPrefWidth(60);
+
         paramsBox.getChildren().addAll(paramsLabel, aField, bField, sField);
         paramsBox.setVisible(false);
 
         cipherChoice.valueProperty().addListener((obs, oldVal, newVal) -> {
             boolean isOTP = "One-Time Pad".equals(newVal);
             paramsBox.setVisible(isOTP);
+            configureOptionalButton(isOTP ? "Create Random Key" : "No Attack Available", true);
+
             if (!isOTP) {
-                // Clear fields when switching away from OTP
                 aField.clear();
                 bField.clear();
                 sField.clear();
@@ -64,25 +66,6 @@ public class Task3 extends CipherAppTemplate {
     }
 
     @Override
-    protected VBox createButtonBox(Stage primaryStage) {
-        VBox buttonBox = super.createButtonBox(primaryStage);
-
-        attackButton = (Button) ((HBox) buttonBox.getChildren().get(1)).getChildren().get(2);
-
-        attackButton.setText("No Attack Available");
-
-        cipherChoice.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if ("One-Time Pad".equals(newValue)) {
-                attackButton.setText("Create Random Key");
-            } else {
-                attackButton.setText("No Attack Available");
-            }
-        });
-
-        return buttonBox;
-    }
-
-    @Override
     protected void handleEncrypt() {
         String text = inputTextArea.getText().trim();
         String key = keyField.getText().trim();
@@ -90,11 +73,13 @@ public class Task3 extends CipherAppTemplate {
         try {
             String selectedCipher = cipherChoice.getValue();
             int textLength = OneTimePadVigenere.length(text);
+
             if ("One-Time Pad".equals(selectedCipher)) {
                 if (key.length() < textLength || key.isEmpty()) {
-                    int a = aField.getText().isEmpty() ? 0 : Integer.parseInt(aField.getText()),
-                            b = bField.getText().isEmpty() ? 0 : Integer.parseInt(bField.getText()),
-                            s = sField.getText().isEmpty() ? 0 : Integer.parseInt(sField.getText());
+                    int a = aField.getText().isEmpty() ? 0 : Integer.parseInt(aField.getText());
+                    int b = bField.getText().isEmpty() ? 0 : Integer.parseInt(bField.getText());
+                    int s = sField.getText().isEmpty() ? 0 : Integer.parseInt(sField.getText());
+
                     key = OneTimePadVigenere.generateRandomKey(textLength, a, b, s % 26);
                     keyField.setText(key);
                 }
@@ -107,6 +92,8 @@ public class Task3 extends CipherAppTemplate {
 
             String encryptedText = OneTimePadVigenere.processText(text, key, true);
             outputTextArea.setText(encryptedText);
+        } catch (NumberFormatException e) {
+            showAlert("Error", "Invalid numeric parameters: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             showAlert("Error", e.getMessage());
         }
@@ -123,16 +110,6 @@ public class Task3 extends CipherAppTemplate {
         }
 
         try {
-/*
-            String selectedCipher = cipherChoice.getValue();
-            if ("One-Time Pad".equals(selectedCipher)) {
-                if (key.length() < text.length()) {
-                    showAlert("Error", "For One-Time Pad, the key must be at least as long as the plaintext.");
-                    return;
-                }
-            }
-*/
-
             String decryptedText = OneTimePadVigenere.processText(text, key, false);
             outputTextArea.setText(decryptedText);
         } catch (IllegalArgumentException e) {
@@ -148,33 +125,27 @@ public class Task3 extends CipherAppTemplate {
             String text = inputTextArea.getText().trim();
 
             if (text.isEmpty()) {
-//                showAlert("Error", "Please enter some plaintext to generate a key.");
+                showAlert("Error", "Please enter some plaintext to generate a key.");
                 return;
             }
+
             try {
-/*
-            String[] arr = keyField.getText().split(",");
-            if (arr.length > 2)
-                try {
-                    int a = Integer.parseInt(arr[0]), b = Integer.parseInt(arr[1]), s = Integer.parseInt(arr[2]);
-                    System.out.println(a + ", " + b + ", " + s);
-                    String randomKey = OneTimePadVigenere.generateRandomKey(text, a, b, s);
-                    keyField.setText(randomKey);
-*/
                 if (aField.getText().isEmpty() || bField.getText().isEmpty() || sField.getText().isEmpty()) {
+                    showAlert("Error", "Please fill all key generation parameters (a, b, s).");
                     return;
                 }
-                int a = Integer.parseInt(aField.getText()),
-                        b = Integer.parseInt(bField.getText()),
-                        s = Integer.parseInt(sField.getText());
+
+                int a = Integer.parseInt(aField.getText());
+                int b = Integer.parseInt(bField.getText());
+                int s = Integer.parseInt(sField.getText());
 
                 String randomKey = OneTimePadVigenere.generateRandomKey(OneTimePadVigenere.length(text), a, b, s % 26);
                 keyField.setText(randomKey);
             } catch (NumberFormatException e) {
-                showAlert("Error", "Invalid parameters: " + e.getMessage());
+                showAlert("Error", "Invalid parameters: All values must be integers.");
             }
         } else {
-            System.out.println("No attack for now, stay tuned.");
+            showAlert("Information", "No attack available for Vigenère Cipher in this version.");
         }
     }
 }

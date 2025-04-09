@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class DESCipher {
+public class DESCipherV1 {
     public static String processText(String text, String key, boolean encrypt) throws Exception {
         validateKey(key);
 
