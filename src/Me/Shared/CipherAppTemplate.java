@@ -114,7 +114,7 @@ public abstract class CipherAppTemplate extends Application {
         // Can be overridden by subclasses for cleanup
     }
 
-    // Constants class with additional configuration options
+    // CONSTANTS class with additional configuration options
     public static class AppConstants {
         public static final String APP_ICON_PATH = "/Me/Shared/Images/app-icon.png";
         public static final String APP_CSS_PATH = "/Me/Shared/styles.css";

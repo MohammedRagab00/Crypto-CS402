@@ -220,7 +220,6 @@ public class V2 extends Application {
         return button;
     }
 
-    // Event Handler Methods
     private void handleEncode() {
         String text = inputTextArea.getText();
         if (text.isEmpty()) {
@@ -267,29 +266,28 @@ public class V2 extends Application {
         String inputText = inputTextArea.getText();
 
         if (inputText.isEmpty()) {
-            showAlert("Error", "Please enter input text");
+            outputTextArea.setText("Error: Please enter input text");
             return;
         }
 
         if (key.length() != 26) {
-            showAlert("Error", "Key must be exactly 26 characters long");
+            outputTextArea.setText("Error: Key must be exactly 26 characters long");
             return;
         }
 
-        // Check for duplicate characters in key
         boolean[] used = new boolean[26];
         for (char c : key.toCharArray()) {
             if (!Character.isLetter(c)) {
-                showAlert("Error", "Key must contain only letters");
+                outputTextArea.setText("Error: Key must contain only letters");
                 return;
             }
 
-            int index = c - 'a';
-            if (used[index]) {
-                showAlert("Error", "Key must not contain duplicate letters");
+            int i = c - 'a';
+            if (used[i]) {
+                outputTextArea.setText("Error: Key must not contain duplicate letters");
                 return;
             }
-            used[index] = true;
+            used[i] = true;
         }
 
         StringBuilder result = new StringBuilder();
@@ -298,7 +296,7 @@ public class V2 extends Application {
                 if (Character.isLowerCase(c)) {
                     result.append(key.charAt(c - 'a'));
                 } else {
-                    result.append(Character.toUpperCase(key.charAt(Character.toLowerCase(c) - 'a')));
+                    result.append(Character.toUpperCase(key.charAt(c - 'A')));
                 }
             } else {
                 result.append(c);
@@ -397,7 +395,6 @@ public class V2 extends Application {
         }
     }
 
-    // Utility Methods
     private int validateShift(String shiftText) {
         try {
             int shift = Integer.parseInt(shiftText);
